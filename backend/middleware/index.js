@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken'
 export const authenticateJwt = async (req, res, next) => {
     const authHeader = req.headers.authorization;
     if(!authHeader || !authHeader.startsWith('Bearer ')){
-        // console.log("one");
+        console.log(authHeader);
         return res.status(411).json({
             message : "wrong initial string for authheader"
         })
@@ -13,10 +13,6 @@ export const authenticateJwt = async (req, res, next) => {
     try{
         if (authHeader) {
             const token = authHeader.split(' ')[1];
-            // jwt.verify(token, SECRET, (err) => {
-            //   if (err) {
-            //     return res.sendStatus(403);
-            //   }
             const decoded = jwt.verify(token, JWT_SECRET);
             
             const user = await prismaClient.user.findFirst({

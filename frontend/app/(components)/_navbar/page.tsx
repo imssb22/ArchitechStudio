@@ -60,9 +60,14 @@ export default function Navbar() {
             <p>Loading...</p>
           ) : username ? (
             <>
+              <Link href="/additems">
+                <button className="bg-amber-500 text-white px-4 py-2 rounded-xl shadow-md hover:bg-amber-600 transition">
+                  Add Items
+                </button>
+              </Link>
               <Link href="/items">
                 <button className="bg-amber-500 text-white px-4 py-2 rounded-xl shadow-md hover:bg-amber-600 transition">
-                  Explore
+                  Item List
                 </button>
               </Link>
               <Link href="/">

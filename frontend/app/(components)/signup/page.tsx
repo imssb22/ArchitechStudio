@@ -15,7 +15,7 @@ export default  function Signup(){
 
     const handleSignup = () => {
         try{
-          debugger
+          
           axios.post('http://localhost:3000/api/v1/admin/signup', {
             username : username, 
             password : password,

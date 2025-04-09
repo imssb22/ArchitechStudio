@@ -28,6 +28,10 @@ const usernameSigninProps = z.object({
     username : z.string().min(5).max(30),
     password : z.string().min(5).max(20)
 })
+
+// const itemsProps = z.object({
+//     title : z
+// })
 // export type SignupParams = z.infer<typeof signupProps>;
 const router = express.Router();
 
@@ -154,6 +158,45 @@ router.get('/me', authenticateJwt, (req, res) => {
 })
 // module.exports = router;
 
+router.post('/additems', authenticateJwt, async(req, res) => {
+    const parsedInputs = req.body;
+    const title = parsedInputs.title
+    const price = parsedInputs.price
+    const description = parsedInputs.description
+    const imageurl = parsedInputs.imageurl
+
+    try{
+        const existing = await prismaClient.items.findFirst({
+            where : {title : title}
+        })
+        if(existing){
+            return res.json({
+                message : "Item already present"
+            })
+        }
+        const user = await prismaClient.items.create({
+            data : {
+                title : title,
+                description : description,
+                price : price,
+                imageurl : imageurl
+            }
+        })
+        return res.json({
+            message : "Item added successfully"
+        })
+        // alert("Item added successfully");
+    }catch(e){
+        console.log("ERR" , e)
+        // alert("Something went wrong")
+    }
+})
 
 
+router.get('/items', authenticateJwt, async(req, res) => {
+    const allItems = await prismaClient.items.findMany();
+    res.json({
+        allItems : allItems
+    })
+})
 export default router;
