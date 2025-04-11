@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import StoreProvider from "./StoreProvider";
 // import { usePathname } from 'next/navigation';
 
 import ClientNavbarWrapper from "./(components)/_clientNavbarWrapper/page";
@@ -31,9 +32,10 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      ><StoreProvider>
         <ClientNavbarWrapper/>
         {children}
+        </StoreProvider>
       </body>
     </html>
   );

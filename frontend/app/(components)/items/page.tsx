@@ -1,9 +1,22 @@
 "use client";
+interface Item {
+  id : string,
+  title: string;
+  description: string;
+  price: number;
+  imageurl: string;
+}
 import axios from "axios";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+
 export default function Items() {
     const [items, setItems] = useState([]);
+    const router = useRouter();
+    const handleUpdate = async(itemId : string) => {
+      router.push(`/items/${itemId}/edit`)
+    }
     
     const fetchItems = () => {
       try {
@@ -22,7 +35,7 @@ export default function Items() {
                 setItems(data.allItems);
             }
             else{
-                
+                console.log("Error getting items")
             }
         })
         }catch(e){
@@ -38,7 +51,7 @@ export default function Items() {
         <h2 className="text-3xl font-bold mb-8 text-gray-800">Browse Items</h2>
   
         <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {items.map((item) => (
+          {items.map((item : Item) => (
             <div
               key={item.id}
               className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-shadow overflow-hidden flex flex-col"
@@ -58,8 +71,14 @@ export default function Items() {
                 <div className="mt-auto flex justify-between items-center">
                   <span className="text-amber-600 font-bold text-lg">₹{item.price}</span>
                   <button className="bg-amber-500 text-white text-sm px-3 py-1.5 rounded-lg hover:bg-amber-600 transition">
-                    View
+                    Buy
                   </button>
+                  
+                  <button onClick={() => {handleUpdate(item.id)}}
+                  className="bg-amber-500 text-white text-sm px-3 py-1.5 rounded-lg hover:bg-amber-600 transition">
+                    Update
+                  </button>
+                  
                 </div>
               </div>
             </div>

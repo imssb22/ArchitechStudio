@@ -2,7 +2,7 @@ import Image from "next/image";
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 via-gray-200 to-gray-300 text-gray-800">
-      {/* Hero Section */}
+      
       <header className="relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('/architectural-pattern.svg')] bg-cover opacity-5 animate-spin-slow z-0"></div>
         <div className="max-w-7xl mx-auto px-8 py-24 lg:py-32 relative z-10 text-center">

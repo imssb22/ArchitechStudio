@@ -199,4 +199,64 @@ router.get('/items', authenticateJwt, async(req, res) => {
         allItems : allItems
     })
 })
+
+router.get('/search', async (req, res) => {
+    const { q } = req.query; 
+
+    if (!q || typeof(q) !== 'string') {
+        return res.status(400).json({ message: "Invalid search query" });
+    }
+
+    try {
+        const searchedItems = await prismaClient.items.findMany({
+        where: {
+            title: {
+            contains: q,
+            mode: 'insensitive' 
+            }
+        }
+        });
+    res.json(searchedItems);
+    }catch(e){
+        console.error(e);
+        res.status(500).json("Error in searching")
+    }
+})
+
+router.get('/items/:id', async (req, res) => {
+    const id = req.params.id
+    console.log(id)
+    try{
+        const item = await prismaClient.items.findFirst({
+            where : {
+                id : id
+            }
+        })
+        console.log(item)
+        return res.json(item);
+    }catch(e){
+        console.error(e);
+        res.status(500).json("Error in searching")
+    }
+})
+
+router.put('/items/:id',async (req, res) => {
+    const id = req.params.id
+    const itemData = req.body
+    try{
+        const item = await prismaClient.items.update({
+            where : {
+                id : id
+            },
+            data : itemData
+        })
+        res.json({
+            message : "Item updated successfully"
+        });
+    }catch(e){
+        console.error(e);
+        res.status(500).json("Error in searching")
+    }
+})
+
 export default router;
