@@ -10,41 +10,48 @@ import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-
+import type { RootState } from '../../../public/store'
+import { useSelector} from 'react-redux'
+// import { useRouter } from "next/navigation";
+// import { login } from '../../../public/features/auth/authSlice'
 export default function Items() {
     const [items, setItems] = useState([]);
     const router = useRouter();
+    const token = useSelector((state : RootState) => state.auth.token)
+
     const handleUpdate = async(itemId : string) => {
       router.push(`/items/${itemId}/edit`)
     }
+    const handleBuy = async(itemId : string) => {
+      router.push(`/cart/${itemId}/edit`)
+    }
     
-    const fetchItems = () => {
-      try {
-        const token = localStorage.getItem("token");
-        if(!token){
-            return alert("Please sign in")
-        }
-        axios.get("http://localhost:3000/api/v1/admin/items", {
-      
-          headers: {
-            Authorization:  token, 
-        }
-        }).then((response) => {
-            const data = response.data;
-            if(response.status === 200){
-                setItems(data.allItems);
-            }
-            else{
-                console.log("Error getting items")
-            }
-        })
-        }catch(e){
-           console.log("ERR" , e);
-        }
-    };
     useEffect(() => {
+      const fetchItems = () => {
+        try {
+          if(!token){
+              return alert("Please sign in")
+          }
+          axios.get("http://localhost:3000/api/v1/admin/items", {
+        
+            headers: {
+              Authorization:  token, 
+          }
+          }).then((response) => {
+              const data = response.data;
+              if(response.status === 200){
+                  setItems(data.allItems);
+              }
+              else{
+                  console.log("Error getting items")
+              }
+          })
+          }catch(e){
+             console.log("ERR" , e);
+          }
+      };
       fetchItems();
-    }, [])
+    }, [token])
     
     return (
       <div className="max-w-7xl mx-auto px-6 py-12">
@@ -70,7 +77,9 @@ export default function Items() {
                 <p className="text-sm text-gray-500 mb-3 line-clamp-2">{item.description}</p>
                 <div className="mt-auto flex justify-between items-center">
                   <span className="text-amber-600 font-bold text-lg">₹{item.price}</span>
-                  <button className="bg-amber-500 text-white text-sm px-3 py-1.5 rounded-lg hover:bg-amber-600 transition">
+                  <button
+                  onClick={() => {handleBuy(item.id)}}
+                  className="bg-amber-500 text-white text-sm px-3 py-1.5 rounded-lg hover:bg-amber-600 transition">
                     Buy
                   </button>
                   

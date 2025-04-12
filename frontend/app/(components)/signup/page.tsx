@@ -2,9 +2,11 @@
 import Link from 'next/link'
 import axios from 'axios'
 import {useState} from 'react';
-// import {useNavigate} from 'react-router-dom'
-// import { useRouter } from 'next/navigation'
-// import { o } from 'assert';
+
+import type { RootState } from '../../../public/store'
+import { useSelector, useDispatch } from 'react-redux'
+// import { useRouter } from "next/navigation";
+import { login } from '../../../public/features/auth/authSlice'
 export default  function Signup(){
   // axios.defaults.headers.common['authorization'] = `Bearer ${localStorage.getItem('token')}`;
 
@@ -12,8 +14,10 @@ export default  function Signup(){
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     // const router = useRouter();
+    const token = useSelector((state : RootState) => state.auth.token)
+    const dispatch = useDispatch();
 
-    const handleSignup = () => {
+    const handleSignup = async() => {
         try{
           
           axios.post('http://localhost:3000/api/v1/admin/signup', {
@@ -24,8 +28,12 @@ export default  function Signup(){
           console.log(response);
           const data = response.data
         if(response.status === 200){
-            localStorage.setItem("token", data.token)
-            console.log("token")
+                  dispatch(login({
+                    username : username, 
+                    isAuthenticated : true,
+                    token : token
+                  }))            
+                  console.log("token")
             // router.push("/landing");
             window.location.href = "/landing";
         }else {

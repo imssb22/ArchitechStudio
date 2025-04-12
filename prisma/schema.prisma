@@ -26,21 +26,22 @@ model User {
 
 model Items {
   id          String    @id @default(uuid())
-  title       String
-  description String
-  price       Int
-  imageurl    String
-  time        DateTime    @default(now())
-  
-}
-
-model Orders  {
-  id          String    @id @default(uuid())
   title       String    @unique
   description String
   price       Int
   imageurl    String
+  time        DateTime    @default(now())
+}
+
+model Orders  {
+  id          String      @id @default(uuid())
+  title       String    
+  description String
+  price       Int
+  imageurl    String
   userId      String
+  quantity    Int
+  itemId      String
   time        DateTime    @default(now())
   user        User        @relation(fields: [userId], references: [id])
 }

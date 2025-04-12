@@ -5,6 +5,8 @@ import Image from "next/image";
 import { useState , useEffect } from "react";
 import { useSearchParams } from 'next/navigation';
 import axios from "axios";
+import type { RootState } from '../../../public/store'
+import { useSelector} from 'react-redux'
 interface Item {
     id : string,
     title: string;
@@ -16,11 +18,12 @@ export default function SearchPage() {
   const searchParams = useSearchParams();
   const query = searchParams.get('q') ?? "";
   const [items, setItems] = useState<Item[]>([]);
-  
+  const token = useSelector((state : RootState) => state.auth.token)
+
   useEffect(() => {
     const fetchItems = async() => {
         try{
-        const token = localStorage.getItem("token");
+        
     if(!token){
         return alert( "You are not signed in")
     }
@@ -43,7 +46,7 @@ export default function SearchPage() {
     }
 }
     if(query)fetchItems();
-  }, [query])
+  }, [query, token])
   return (
     <div className="p-4">
       <h1 className="text-xl font-semibold">Search Results for: `{query}`</h1>

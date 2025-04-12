@@ -9,11 +9,12 @@ interface Item {
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-
+import type { RootState } from '../../../../../public/store'
+import { useSelector} from 'react-redux'
 
 export default function EditCard(){
     const itemId = useParams().id as string;
-;
+    const token = useSelector((state : RootState) => state.auth.token)
     console.log({itemId});
     const router = useRouter();
     const [formdata, setFormData] = useState<Omit<Item, 'id'>>({
@@ -44,7 +45,7 @@ export default function EditCard(){
         debugger;
         console.log(itemId);
         try {
-            const token = localStorage.getItem("token");
+            
             if(!token){
                  alert("Please sign in")   
                  return

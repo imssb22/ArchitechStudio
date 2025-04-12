@@ -18,7 +18,11 @@
     "jsonwebtoken": "^9.0.2",
     "prisma": "^6.5.0",
     "react-redux": "^9.2.0",
+    "redux-logger": "^3.0.6",
     "zod": "^3.24.2"
   },
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "@types/redux-logger": "^3.0.13"
+  }
 }

@@ -1,6 +1,9 @@
 "use client"
 import axios from "axios";
 import { useState } from "react";
+import type { RootState } from '../../../public/store'
+import { useSelector } from 'react-redux'
+// import { login } from '../../../public/features/auth/authSlice'
 
 export default function Additems() {
     const [formdata, setFormData] = useState({title:"", description : "", price: 0, imageurl : ""});
@@ -8,10 +11,12 @@ export default function Additems() {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> ) => {
         setFormData({ ...formdata, [e.target.name]: e.target.value });
       };
+      const token = useSelector((state : RootState) => state.auth.token)
+
     const handleSubmit = ()=> {
         try{
             debugger
-            const token = localStorage.getItem("token");
+            
             if(!token){
                 console.log("No token");
                 return;

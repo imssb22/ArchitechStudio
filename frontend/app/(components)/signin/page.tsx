@@ -2,9 +2,17 @@
 import axios from "axios";
 import Link from "next/link";
 import { useState } from "react";
+import type { RootState } from '../../../public/store'
+import { useSelector, useDispatch } from 'react-redux'
+import { useRouter } from "next/navigation";
+import { login } from '../../../public/features/auth/authSlice'
 export default function Signin(){
       const [username, setUsername] = useState("");
       const [password, setPassword] = useState("");
+
+      const token = useSelector((state : RootState) => state.auth.token)
+      const dispatch = useDispatch();
+      const router = useRouter()
       // const [email, setEmail] = useState("");
       const handleSubmit = () => {
         try{
@@ -15,9 +23,16 @@ export default function Signin(){
           }).then((response) => {
               const data = response.data
               if(response.status === 200){
-                  localStorage.setItem("token", data.token);
-                  console.log("token")
+                localStorage.setItem("token", data.token);
+                axios.defaults.headers.common['Authorization'] = token;
+                  dispatch(login({
+                    username : username, 
+                    isAuthenticated : true,
+                    token : data.token
+                  }))
+                  console.log(token)
                   window.location.href = "/landing";
+                  router.push('/landing')
               }else{
                   alert(data.message);
               }
@@ -66,7 +81,8 @@ export default function Signin(){
             className="w-full bg-amber-500 text-white py-2 rounded-lg hover:bg-amber-600 transition shadow-lg">
             Sign In
           </button>
-          <p className="text-center text-sm text-gray-500 mt-4">New here? <Link className="text-blue-500 hover:underline" href="/signup">Sign Up</Link></p>
+          <p className="text-center text-sm text-gray-500 mt-4">New here? 
+            <Link className="text-blue-500 hover:underline" href="/signup">Sign Up</Link></p>
         </form>
       </div>
     </div>

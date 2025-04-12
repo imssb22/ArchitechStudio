@@ -259,4 +259,28 @@ router.put('/items/:id',async (req, res) => {
     }
 })
 
+router.put('/cart', authenticateJwt, async (req, res) => {
+    const itemId = req.body.itemId;
+    const item = req.body
+    try{
+        const order = await prismaClient.orders.upsert({
+            where : {itemId : itemId},
+            update : {quantity : {increment : 1}},
+            create : {
+                title : item.title,
+                description : item.description,
+                price : item.price,
+                imageurl : item.imageurl,
+                quantity : 1,
+                itemId : itemId
+            }
+        })
+        res.json(order);
+    }catch(e){
+        console.log("err" , e);
+        res.status(501).json({
+            message : "Something went wrong"
+        })
+    }
+})
 export default router;

@@ -1,23 +1,29 @@
 "use client";
 
 import Link from 'next/link';
-import axios from 'axios';
 import { useRouter, usePathname } from 'next/navigation';
 import {useState, useEffect} from 'react';
-
+import type { RootState } from '../../../public/store'
+import { useSelector, useDispatch } from 'react-redux'
+import { logout } from '../../../public/features/auth/authSlice'
 export default function Navbar() {
-  const [username, setUsername] = useState(null)
+  
   const [isLoading, setIsLoading] = useState(true)
   const [query, setQuery] = useState('');
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
-  // const handleClick = () => {
-  //   setIsOpen(!isOpen);
-  // };
+  const isAuthenticated = useSelector((state : RootState) => state.auth.isAuthenticated)
+  const dispatch = useDispatch();
   const currentUrl = usePathname();
-
-
+  useEffect(() => {
+    if (!isAuthenticated) {
+      dispatch(logout());
+      setIsLoading(false);
+    } else {
+      setIsLoading(false);
+    }
+  }, [isAuthenticated, dispatch]);
   console.log("The current endpoint is: ", currentUrl)
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,40 +32,8 @@ export default function Navbar() {
       setQuery('');
     }
   };
-  const fetchUser = async() => {
-
-      const token = localStorage.getItem("token");
-      console.log(token);
-      if(!token){
-          setUsername(null);
-          setIsLoading(false);
-          return;
-      }
-      axios.get("http://localhost:3000/api/v1/admin/me", {
-        headers: {
-          Authorization:  token,
-        },
-      }).then((response) => {
-          const data = response.data;
-          if(response.status === 200){
-              setUsername(data.username);
-          }else{
-            setUsername(null);
-          }
-          setIsLoading(false);
-      })
-    .catch(() => {
-      setUsername(null);
-      setIsLoading(false);
-    });
-  };
-  useEffect(() => {
-    fetchUser();
-  }, []);
-
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    setUsername(null);
+    dispatch(logout())
     window.location.href = "/signin";
   };
 
@@ -69,7 +43,7 @@ export default function Navbar() {
         <div className="container mx-auto px-4 flex justify-between items-center">
     
           <div className="flex items-center space-x-4">
-            <button onClick={() => setIsOpen(!isOpen)} className="absolute left-10 flex flex-col justify-center items-center mr-2">
+            <button onClick={() => setIsOpen(!isOpen)} className="  flex flex-col justify-center items-center mr-2">
               <span className={`bg-white block h-0.5 w-6 rounded-sm transition-all duration-300 ${isOpen ? 'rotate-45 translate-y-1' : '-translate-y-0.5'}`} />
               <span className={`bg-white block h-0.5 w-6 rounded-sm my-0.5 transition-all duration-300 ${isOpen ? 'opacity-0' : 'opacity-100'}`} />
               <span className={`bg-white block h-0.5 w-6 rounded-sm transition-all duration-300 ${isOpen ? '-rotate-45 -translate-y-1' : 'translate-y-0.5'}`} />
@@ -86,7 +60,7 @@ export default function Navbar() {
           <div className="flex items-center space-x-4">
             {isLoading ? (
               <p className="text-white">Loading...</p>
-            ) : username ? ( currentUrl === '/items' ?
+            ) : isAuthenticated ? ( currentUrl === '/items' ?
               <>
                 <form
                   onSubmit={handleSearch}
