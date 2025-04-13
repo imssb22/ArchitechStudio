@@ -11,33 +11,30 @@ export const authenticateJwt = async (req, res, next) => {
         })
     }
     try{
-        if (authHeader) {
-            const token = authHeader.split(' ')[1];
-            const decoded = jwt.verify(token, JWT_SECRET);
-            
-            const user = await prismaClient.user.findFirst({
-                where : {
-                    id : decoded
-                }
-            })
-            if(!user){
-                res.status(412).json({
-                    message : "You are not authenticated"
-                })
-            }else{
-            req.username = user.username;
-            next();
+        const token = authHeader.split(' ')[1];
+        const decoded = jwt.verify(token, JWT_SECRET);
+        
+        const user = await prismaClient.user.findFirst({
+            where: {
+                id: decoded.userId
             }
-            }
-            else {
-                res.sendStatus(401).json({
-                      message : "Authheader Not present"
-                });
-              }
-          } catch(e){
-                console.log(e)
-                return res.status(411).json({
-                    message : "Something went wrong"            
+        });
+        
+        if(!user) {
+            return res.status(412).json({
+                message: "You are not authenticated"
+            });
+        }
+        
+        req.user = {
+            id: user.id,
+            username: user.username
+        };
+        next();
+        } catch(e){
+            console.log(e)
+            return res.status(411).json({
+                message : "Something went wrong"            
         })
     }
     

@@ -76,7 +76,10 @@ router.post('/signup',  async (req, res) =>{
             
     })
         console.log(user);
-        const token = 'Bearer ' + jwt.sign(user.id, JWT_SECRET)
+        const token = 'Bearer ' + jwt.sign({
+            userId : user.id,
+            username : user.username
+        }, JWT_SECRET)
         console.log(token);
         return res.json({
             token : token
@@ -116,7 +119,10 @@ router.post('/signin', async (req, res) => {
                 })
             }
             console.log(user);
-            const token = 'Bearer ' + jwt.sign(user.id, JWT_SECRET)
+            const token = 'Bearer ' + jwt.sign({
+                userId : user.id,
+                username : user.username
+            }, JWT_SECRET)
             console.log(token);
             return res.json({
                 token : token
@@ -141,7 +147,10 @@ router.post('/signin', async (req, res) => {
                 })
             }
             console.log(user);
-            const token = 'Bearer ' + jwt.sign(user.id, JWT_SECRET)
+            const token = 'Bearer ' + jwt.sign({
+                userId : user.id,
+                username : user.username
+            }, JWT_SECRET)
             console.log(token);
             return res.json({
                 token : token
@@ -251,6 +260,7 @@ router.put('/items/:id',async (req, res) => {
             data : itemData
         })
         res.json({
+            
             message : "Item updated successfully"
         });
     }catch(e){
@@ -272,10 +282,12 @@ router.put('/cart', authenticateJwt, async (req, res) => {
                 price : item.price,
                 imageurl : item.imageurl,
                 quantity : 1,
-                itemId : itemId
+                itemId : itemId,
+                userId : req.user.id
             }
         })
         res.json(order);
+        alert("Item added successfully")
     }catch(e){
         console.log("err" , e);
         res.status(501).json({
@@ -283,4 +295,53 @@ router.put('/cart', authenticateJwt, async (req, res) => {
         })
     }
 })
+
+router.get('/cart', authenticateJwt, async (req, res) => {
+    const userId = req.user.id;
+    try{
+        const cartItems = await prismaClient.orders.findMany({
+            where : {userId : userId}
+        })
+        res.json(cartItems)
+
+    }catch(e){
+        console.log("err", e);
+        res.status(511).json({
+            message : "Something went wrong"
+        })
+    }
+});
+
+router.put('/cart/:itemId', authenticateJwt, async(req, res) => {
+    const change = req.body.change;
+    const itemId = req.params.itemId;
+
+    try{
+        const currOrder = await prismaClient.orders.findFirst({
+            where : {itemId : itemId}
+        })
+        if(currOrder.quantity + change < 0){
+            return res.json({
+                message : "Quantity can't go lower than 0"
+            })
+        }
+        const order = await prismaClient.orders.update({
+            where : {itemId : itemId},
+            data : {
+                quantity : {increment : change}
+            }
+        });
+        return res.json({
+            quantity : order.quantity
+        })
+
+    }catch(e){
+        console.log(e);
+        res.status(511).json({
+            message : "Something went wrong",
+        });
+        
+    }
+})
+
 export default router;

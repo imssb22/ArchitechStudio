@@ -41,7 +41,7 @@ model Orders  {
   imageurl    String
   userId      String
   quantity    Int
-  itemId      String
+  itemId      String      @unique
   time        DateTime    @default(now())
   user        User        @relation(fields: [userId], references: [id])
 }
