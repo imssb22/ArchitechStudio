@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Architects_Daughter } from 'next/font/google';
 import AuthInitializer from "./(components)/_AuthInitializer/page";
 import StoreProvider from "./StoreProvider";
 // import { usePathname } from 'next/navigation';

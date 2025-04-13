@@ -46,102 +46,119 @@ export default function Additems() {
         }
     }
     
-    return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-100 via-white to-zinc-100 px-4 py-12 flex justify-center items-center">
-      <div className="bg-white rounded-3xl shadow-2xl p-12 max-w-4xl w-full relative overflow-hidden">
+return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 px-4 py-12 flex justify-center items-center relative">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          backgroundSize: '60px 60px'
+        }}></div>
+      </div>
 
+      <div className="bg-white/10 backdrop-blur-xl rounded-none shadow-2xl p-12 max-w-4xl w-full relative border-l-4 border-l-amber-500">
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-300"></div>
+        <div className="absolute top-0 right-0 w-1 h-full bg-gradient-to-b from-amber-500 via-amber-400 to-amber-300"></div>
 
-        <div className="absolute -top-20 -left-20 w-60 h-60 bg-blue-200 rounded-full blur-3xl opacity-30"></div>
-        <div className="absolute -bottom-20 -right-20 w-60 h-60 bg-purple-300 rounded-full blur-3xl opacity-30"></div>
-        <h2 className="text-4xl font-extrabold text-center text-slate-900 mb-8">
-          Create a New Listing
+        <h2 className="text-4xl font-light text-center text-white mb-2">
+          <span className="relative">
+            Add Items
+            <span className="absolute -bottom-2 left-0 w-full h-px bg-gradient-to-r from-transparent via-amber-500 to-transparent"></span>
+          </span>
         </h2>
-
+        <p className="text-center text-slate-300 mb-12 font-light tracking-wider">Create your architectural masterpiece</p>
 
         <form className="grid grid-cols-1 md:grid-cols-2 gap-8" onSubmit={handleSubmit}>
-          <div className="relative">
-            <label
-                className="absolute left-4 top-3 text-gray-500 text-sm peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-gray-500 transition-all"
-            >
-                Title
-            </label>
+          {/* Title Input */}
+          <div className="relative group">
             <input
-                name="title"
-                type="text"
-                required
-                placeholder=" "
-                onChange={handleChange}
-                value={formdata.title}
-                className="peer w-full pt-6 px-4 pb-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-50"
+              name="title"
+              type="text"
+              required
+              placeholder=" "
+              onChange={handleChange}
+              value={formdata.title}
+              className="peer h-14 w-full border-b-2 border-slate-500 text-white placeholder-transparent focus:outline-none focus:border-amber-500 bg-white/5 px-4 transition-all duration-300 backdrop-blur-sm"
             />
-            </div>
-
-
-          <div className="relative">
-                <label
-                    className="absolute left-4 top-3 text-gray-500 text-sm peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-gray-500 transition-all"
-                >
-                    Price
-                </label>
-                <input
-                    name="price"
-                    type="number"
-                    required
-                    placeholder=" "
-                    onChange={handleChange}
-                    value={formdata.price}
-                    className="peer w-full pt-6 px-4 pb-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-50 appearance-none 
-                    [&::-webkit-outer-spin-button]:appearance-none 
-                    [&::-webkit-inner-spin-button]:appearance-none 
-                    [&::-moz-inner-spin-button]:appearance-none"
-                />
-                </div>
-
-
-            <div className="md:col-span-2 relative">
-            <label className="absolute left-4 top-3 text-gray-500 text-sm peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-gray-500 transition-all">
-                Description
+            <label className="absolute left-4 -top-3.5 text-slate-400 text-sm transition-all 
+                    peer-placeholder-shown:text-base peer-placeholder-shown:text-slate-400 peer-placeholder-shown:top-4 
+                    peer-focus:-top-3.5 peer-focus:text-amber-500 peer-focus:text-sm">
+              Title
             </label>
-            <textarea
-                name="description"
-                required
-                placeholder=" "
-                onChange={handleChange}
-                value={formdata.description}
-                className="peer w-full pt-6 px-4 pb-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-50 resize-none"
+          </div>
+
+          {/* Price Input */}
+          <div className="relative group">
+            <input
+              name="price"
+              type="number"
+              required
+              placeholder=" "
+              onChange={handleChange}
+              value={formdata.price}
+              className="peer h-14 w-full border-b-2 border-slate-500 text-white placeholder-transparent focus:outline-none focus:border-amber-500 bg-white/5 pl-8 pr-4 transition-all duration-300 backdrop-blur-sm"
             />
-            </div>
+            <label className="absolute left-8 -top-3.5 text-slate-400 text-sm transition-all 
+                    peer-placeholder-shown:text-base peer-placeholder-shown:text-slate-400 peer-placeholder-shown:top-4 
+                    peer-focus:-top-3.5 peer-focus:text-amber-500 peer-focus:text-sm">
+              Price
+            </label>
+            <span className="absolute left-4 top-4 text-slate-400">₹</span>
+          </div>
 
+          {/* Description Textarea */}
+          <div className="relative group md:col-span-2">
+            <textarea
+              name="description"
+              required
+              placeholder=" "
+              onChange={handleChange}
+              value={formdata.description}
+              rows={4}
+              className="peer w-full border-b-2 border-slate-500 text-white placeholder-transparent focus:outline-none focus:border-amber-500 bg-white/5 p-4 transition-all duration-300 backdrop-blur-sm resize-none"
+            />
+            <label className="absolute left-4 -top-3.5 text-slate-400 text-sm transition-all 
+                    peer-placeholder-shown:text-base peer-placeholder-shown:text-slate-400 peer-placeholder-shown:top-4 
+                    peer-focus:-top-3.5 peer-focus:text-amber-500 peer-focus:text-sm">
+              Description
+            </label>
+          </div>
 
-          <div className="md:col-span-2 relative">
-                <label
-                    className="absolute left-4 top-3 text-gray-500 text-sm peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-gray-500 transition-all"
-                >
-                    Image Link
-                </label>
-                <input
-                    name="imageurl"
-                    
-                    required
-                    placeholder=" "
-                    onChange={handleChange}
-                    value={formdata.imageurl}
-                    className="peer w-full pt-6 px-4 pb-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-50"
-                />
-                </div>
-                <div className="mt-10 flex justify-center">
-                <button
-                    type="submit"
-                    className="bg-amber-500 hover:bg-amber-600 text-white font-semibold px-8 py-3 rounded-xl shadow-md transition-transform hover:scale-105"
-                >
-                    Submit Listing
-                </button>
-                </div>
+          {/* Image URL Input */}
+          <div className="relative group md:col-span-2">
+            <input
+              name="imageurl"
+              type="url"
+              required
+              placeholder=" "
+              onChange={handleChange}
+              value={formdata.imageurl}
+              className="peer h-14 w-full border-b-2 border-slate-500 text-white placeholder-transparent focus:outline-none focus:border-amber-500 bg-white/5 px-4 transition-all duration-300 backdrop-blur-sm"
+            />
+            <label className="absolute left-4 -top-3.5 text-slate-400 text-sm transition-all 
+                    peer-placeholder-shown:text-base peer-placeholder-shown:text-slate-400 peer-placeholder-shown:top-4 
+                    peer-focus:-top-3.5 peer-focus:text-amber-500 peer-focus:text-sm">
+              Image URL
+            </label>
+          </div>
+
+          {/* Submit Button */}
+          <div className="md:col-span-2 flex justify-center mt-12">
+            <button
+              type="submit"
+              className="group relative px-8 py-4 bg-amber-500 text-white font-light tracking-wider hover:bg-amber-400 transition-all duration-300
+                       before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:border before:border-amber-500
+                       before:-translate-x-2 before:-translate-y-2 before:transition-transform before:duration-300
+                       hover:before:translate-x-0 hover:before:translate-y-0 overflow-hidden
+                       after:content-[''] after:absolute after:h-[200%] after:w-[200%] after:bg-white/10 after:rotate-45 after:-translate-x-full
+                       hover:after:translate-x-[50%] after:transition-transform after:duration-700"
+            >
+              Submit
+            </button>
+          </div>
         </form>
-
-        
       </div>
     </div>
-  );
+);
 
 }
