@@ -20,3 +20,35 @@ jobs:
                 file: ./docker/Dockerfile.backend
                 push: true
                 tags: imssb22/arch-backend:${{ github.sha }}  
+            - name: Deploy to the VM
+              run: |
+                # Save the SSH private key from GitHub secrets to a file
+                echo "${{ secrets.SSH_KEY }}" > ~/ssh_key
+      
+                # Set correct file permissions for the SSH key
+                chmod 600 ~/ssh_key
+      
+                # SSH to the VM and stop/remove the old container, then run the new container
+                ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@3.110.37.154 -t "
+                  # Stop and remove the existing container (if any)
+                  docker stop user_backend || true
+                  docker rm user_backend || true
+                  docker stop postgres || true
+                  docker rm postgres || true
+      
+                  # Run the new container with environment variables
+                  docker network create arch-network || true
+                  docker run -d \
+                    -p 5432:5432 \
+                    -e POSTGRES_PASSWORD=randompassword \
+                    --name postgres \
+                    --network arch-network \
+                    postgres
+                  docker run -d \
+                    -p 3000:3000 \
+                    -e DATABASE_URL='${{ secrets.DATABASE_URL }}' \
+                    -e JWT_SECRET='${{ secrets.JWT_SECRET }}' \
+                    --name user_backend \
+                    --network arch-network \
+                    imssb22/arch-backend:${{ github.sha }}
+                "

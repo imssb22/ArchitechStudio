@@ -20,3 +20,22 @@ jobs:
                 file: ./docker/Dockerfile.frontend
                 push: true
                 tags: imssb22/arch-frontend:${{ github.sha }}  
+            - name: Deploy to VM
+              run: |
+                # Save the SSH private key from GitHub secrets to a file
+                echo "${{ secrets.SSH_KEY }}" > ~/ssh_key
+      
+                # Set correct file permissions for the SSH key rwx - 110
+                chmod 600 ~/ssh_key
+      
+                # SSH to the VM and stop/remove the old container, then run the new container
+                ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@3.110.37.154"
+                  docker stop user_frontend || true
+                  docker rm user_frontend || true
+      
+                  docker run -d \
+                    -p 3001:3001 \
+                    --name user_frontend \
+                    imssb22/arch-frontend:${{ github.sha }}
+                "
+  
