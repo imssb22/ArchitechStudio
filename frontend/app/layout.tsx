@@ -20,7 +20,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Archistudio | Architecture & Construction",
+  title: "Archistudio",
   description: "Designing spaces that inspire. Building dreams that last.",
 };
 

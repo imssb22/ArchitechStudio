@@ -344,4 +344,86 @@ router.put('/cart/:itemId', authenticateJwt, async(req, res) => {
     }
 })
 
+router.get('/architects', authenticateJwt, async(req, res) => {
+    const allItems = await prismaClient.architects.findMany();
+    res.json({
+        allItems : allItems
+    })
+})
+
+router.post('/addarchitect', authenticateJwt, async(req, res) => {
+    const inputs = req.body;
+    const name = inputs.name
+    const phone = inputs.phone
+    const description = inputs.description
+    const imageurl = inputs.imageurl
+    const rating = inputs.rating
+    const yoe = inputs.yoe
+
+    try{
+        const existing = await prismaClient.architects.findFirst({
+            where : {name : name}
+        })
+        if(existing){
+            return res.json({
+                message : "Architect already present"
+            })
+        }
+        const user = await prismaClient.architects.create({
+            data : {
+                name : name,
+                yoe : yoe,
+                phone : phone,
+                description : description,
+                rating : rating,
+                imageurl : imageurl
+            }
+        })
+        return res.json({
+            message : "Architect added successfully"
+        })
+        // alert("Item added successfully");
+    }catch(e){
+        console.log("ERR" , e)
+        // alert("Something went wrong")
+    }
+})
+
+router.put('/architects/:id',async (req, res) => {
+    const id = req.params.id
+    const itemData = req.body
+    try{
+        const item = await prismaClient.architects.update({
+            where : {
+                id : id
+            },
+            data : itemData
+        })
+        res.json({
+            
+            message : "Item updated successfully"
+        });
+    }catch(e){
+        console.error(e);
+        res.status(500).json("Error in searching")
+    }
+})
+
+router.get('/architects/:id', async (req, res) => {
+    const id = req.params.id
+    console.log(id)
+    try{
+        const item = await prismaClient.architects.findFirst({
+            where : {
+                id : id
+            }
+        })
+        console.log(item)
+        return res.json(item);
+    }catch(e){
+        console.error(e);
+        res.status(500).json("Error in searching")
+    }
+})
+
 export default router;

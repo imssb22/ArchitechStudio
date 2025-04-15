@@ -39,7 +39,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 shadow-xl py-4 border-b border-amber-500/20 relative z-50">
+    <>{isAuthenticated ? ( <nav className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 shadow-xl py-8 border-b border-amber-500/20 relative z-50">
       <div className="container mx-auto px-4 flex justify-between items-center">
         <div className="flex items-center space-x-6">
           <button 
@@ -87,7 +87,7 @@ export default function Navbar() {
               )}
               <Link href="/cart" className="relative group">
                 <div className="text-white/80 hover:text-amber-400 transition-colors duration-300">
-                  <FaShoppingCart size={24} />
+                  <FaShoppingCart size={30} />
                   <span className="absolute -top-2 -right-2 w-5 h-5 bg-amber-500 rounded-full flex items-center justify-center text-xs text-white">
                     0
                   </span>
@@ -127,7 +127,7 @@ export default function Navbar() {
             ×
           </button>
           
-          {["Home", "Add Items", "Items", "Cart"].map((item) => (
+          {["Home", "Add Items", "Items", "Cart", "Architects", "Add Architect"].map((item) => (
             <Link 
               key={item}
               href={`/${item === "Home" ? "landing" : item.toLowerCase().replace(" ", "")}`} 
@@ -152,7 +152,8 @@ export default function Navbar() {
           </button>
         </div>
       )}
-    </nav>
+    </nav> ) : (<> </>)}
+    </>
   );
     
 }

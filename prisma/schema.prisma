@@ -45,3 +45,23 @@ model Orders  {
   time        DateTime    @default(now())
   user        User        @relation(fields: [userId], references: [id])
 }
+
+model Architects {
+  id          String      @id @default(uuid())
+  name        String      @unique
+  phone       String
+  imageurl    String
+  yoe         Float
+  rating      Float
+  description String
+}
+
+model Bookings {
+  id              String      @id @default(uuid())
+  startTime       DateTime
+  endTime         DateTime
+  name            String
+  imageurl        String
+  userId          String
+  architectId     String
+}
