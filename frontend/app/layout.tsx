@@ -2,9 +2,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Architects_Daughter } from 'next/font/google';
 import AuthInitializer from "./(components)/_AuthInitializer/page";
 import StoreProvider from "./StoreProvider";
+import { Suspense } from "react";
 // import { usePathname } from 'next/navigation';
 
 import ClientNavbarWrapper from "./(components)/_clientNavbarWrapper/page";
@@ -36,8 +36,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       ><StoreProvider>
         <AuthInitializer/>
+        <Suspense>
         <ClientNavbarWrapper/>
         {children}
+        </Suspense>
+        
         </StoreProvider>
       </body>
     </html>
