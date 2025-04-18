@@ -31,19 +31,19 @@ jobs:
                 # SSH to the VM and stop/remove the old container, then run the new container
                 ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@3.110.37.154 -t "
                   # Stop and remove the existing container (if any)
+                  docker network create arch-network || true
                   docker stop user_backend || true
                   docker rm user_backend || true
                   docker stop postgres || true
                   docker rm postgres || true
-      
-                  # Run the new container with environment variables
-                  docker network create arch-network || true
+                # Run the new container with environment variables
                   docker run -d \
-                    -p 5432:5432 \
-                    -e POSTGRES_PASSWORD=randompassword \
+                    -e POSTGRES_PASSWORD=${{ secrets.DATABASE_PASSWORD }} \
                     --name postgres \
                     --network arch-network \
                     postgres
+      
+                  # Run the new container with environment variables
                   docker run -d \
                     -p 3000:3000 \
                     -e DATABASE_URL='${{ secrets.DATABASE_URL }}' \

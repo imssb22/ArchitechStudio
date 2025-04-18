@@ -127,7 +127,7 @@ export default function Navbar() {
             ×
           </button>
           
-          {["Home", "Add Items", "Items", "Cart", "Architects", "Add Architect"].map((item) => (
+          {["Home", "Add Items", "Items", "Cart", "Architects", "Add Architect", "Bookings"].map((item) => (
             <Link 
               key={item}
               href={`/${item === "Home" ? "landing" : item.toLowerCase().replace(" ", "")}`} 

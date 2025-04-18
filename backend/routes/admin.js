@@ -14,6 +14,7 @@ import { authenticateJwt } from '../middleware/index.js';
 app.use(express.json());
 // const z = require('zod')
 import { z } from 'zod';
+import { retry } from '@reduxjs/toolkit/query';
 const signupProps = z.object({
     email : z.string().email(),
     //phone : z.string().min(10).max(10),
@@ -344,6 +345,8 @@ router.put('/cart/:itemId', authenticateJwt, async(req, res) => {
     }
 })
 
+
+
 router.get('/architects', authenticateJwt, async(req, res) => {
     const allItems = await prismaClient.architects.findMany();
     res.json({
@@ -423,6 +426,110 @@ router.get('/architects/:id', async (req, res) => {
     }catch(e){
         console.error(e);
         res.status(500).json("Error in searching")
+    }
+})
+
+router.get('/bookings', authenticateJwt, async(req, res) => {
+    const id = req.user.id
+    try{
+        const bookings = await prismaClient.bookings.findMany({
+            where : {userId : id}
+        })
+        console.log(bookings)
+        if(bookings)
+        res.json(bookings)
+    }catch(e){
+        console.log("ERR", e);
+        res.status(500).json({
+            message: "failed to fetch your bookings"
+        })
+    }
+})
+
+router.get('/bookings/:archId', authenticateJwt, async(req, res) => {
+    const archId = req.params.archId
+
+    try{
+        const existing = await prismaClient.bookings.findMany({
+            where : {
+                architectId : archId,
+                
+            },
+            select : {
+                startTime : true,
+                endTime : true
+            }
+        })
+        if(existing){
+            return res.json(existing)
+        }
+        
+    }catch(e){
+        console.error(e);
+        res.status(500).json({
+            message : "Error occured"
+        })
+    }
+
+})
+
+router.post('/bookings/:archId', authenticateJwt, async(req, res) => {
+    const archId = req.params.archId
+    const userId = req.user.id;
+    const startTime = req.body.startTime
+    const endTime = req.body.endTime;
+    const name = req.body.name;
+    const imageurl = req.body.imageurl
+    
+    try{
+        const existing = await prismaClient.bookings.findMany({
+            where : {
+                architectId : archId,
+                startTime : startTime,
+                endTime : endTime
+            },
+            
+        })
+        if(existing.length !== 0){
+            return res.json({
+                message : "booking already present",
+                present : true
+            })
+        }
+        const newBooking = await prismaClient.bookings.create({
+            data : {
+                startTime : startTime,
+                endTime : endTime,
+                userId : req.user.id,
+                name : name,
+                imageurl : imageurl,
+                architectId : archId
+            }
+        })
+     
+        res.status(200).json({
+            message : "Created successfully"
+        })
+
+        return;
+    }catch(e){
+        console.error(e);
+        res.status(500).json({
+            message : "Error occured"
+        })
+    }
+})
+
+router.delete('/bookings/:bookingId', authenticateJwt, async(req, res) => {
+    try{
+        await prismaClient.bookings.delete({
+            where : {id : req.params.bookingId }
+        })
+        return res.json({
+            message : "Cancelled successfully"
+        })
+    }catch(e){
+        console.log(e,"err")
     }
 })
 

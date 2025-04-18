@@ -23,22 +23,22 @@ export default function Architects() {
     const handleUpdate = async(itemId : string) => {
       router.push(`/architects/${itemId}/edit`)
     }
-    const handleBook = async(item : Architect) => {
-        try{
-         
-            await axios.put("http://localhost:3000/api/v1/admin/bookings", {
-                name : item.name,
-                description : item.description,
-                phone : item.phone,
-                imageurl : item.imageurl,
-                quantity : 1,
-                itemId : item.id,
-            });
-            alert("Added successfully to bookings");
-        }catch(e){
-            console.log("err", e);
-            alert("something went wrong while sending the req")
-        }
+    const handleBook = async(itemId : string) => {
+        router.push(`bookings/${itemId}/edit`);
+        // try{
+        //     await axios.put(`http://localhost:3000/api/v1/admin/booking/{itemId}`, {
+        //         name : item.name,
+        //         description : item.description,
+        //         phone : item.phone,
+        //         imageurl : item.imageurl,
+        //         quantity : 1,
+        //         itemId : item.id,
+        //     });
+        //     alert("Added successfully to bookings");
+        // }catch(e){
+        //     console.log("err", e);
+        //     alert("something went wrong while sending the req")
+        // }
     }
     
     useEffect(() => {
@@ -132,7 +132,7 @@ export default function Architects() {
                   </div>
                   <div className="mt-auto flex justify-end items-center space-x-3">
                     <button
-                      onClick={() => {handleBook(architect)}}
+                      onClick={() => {handleBook(architect.id)}}
                       className="relative px-6 py-2.5 bg-amber-400 text-stone-900 text-sm font-medium tracking-wider hover:bg-amber-300 transition-all duration-300 rounded-lg"
                     >
                       Book Now

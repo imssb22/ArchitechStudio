@@ -20,7 +20,7 @@ model User {
   phone       String?
   password    String  
   type        String     @default("user")
-
+  bookings    Bookings[]
   orders      Orders[]
 }
 
@@ -54,14 +54,22 @@ model Architects {
   yoe         Float
   rating      Float
   description String
+  bookings    Bookings[]
 }
 
 model Bookings {
   id              String      @id @default(uuid())
   startTime       DateTime
   endTime         DateTime
+  createdAt       DateTime   @default(now()) 
   name            String
   imageurl        String
+  user            User       @relation(fields: [userId], references: [id])
   userId          String
+  architect       Architects @relation(fields: [architectId], references: [id])
   architectId     String
+
+  @@index([userId])
+  @@index([architectId])
+
 }
