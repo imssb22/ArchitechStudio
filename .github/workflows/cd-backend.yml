@@ -38,7 +38,7 @@ jobs:
                   docker rm postgres || true
                 # Run the new container with environment variables
                   docker run -d \
-                    -e POSTGRES_PASSWORD=${{ secrets.DATABASE_PASSWORD }} \
+                    -e POSTGRES_PASSWORD='${{ secrets.DATABASE_PASSWORD }}' \
                     --name postgres \
                     --network arch-network \
                     postgres
