@@ -27,7 +27,7 @@ export default function Cart(){
                 if(!token){
                     return alert("Please sign in")
                 }
-                const response = await axios.get("http://localhost:3000/api/v1/admin/cart");
+                const response = await axios.get("http://3.110.37.154:80/api/v1/admin/cart");
                 if(response.status === 200){
                     setCartItems(response.data)
                     setCurrQuantity(response.data.quantity)
@@ -55,7 +55,7 @@ export default function Cart(){
             if (!token) {
                 return alert("Please sign in");
             }
-            const response = await axios.put(`http://localhost:3000/api/v1/admin/cart/${itemId}`, {change : change});
+            const response = await axios.put(`http://3.110.37.154:80/api/v1/admin/cart/${itemId}`, {change : change});
             if(response.status === 200){
                 setCurrQuantity(response.data.quantity)
                 console.log("updated")

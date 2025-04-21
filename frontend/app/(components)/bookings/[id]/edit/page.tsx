@@ -46,7 +46,7 @@ export default function BookingEdit(){
 
     useEffect(() => {
         const getInfo = async() => {
-        axios.get(`http://localhost:3000/api/v1/admin/architects/${archId}`)
+        axios.get(`http://3.110.37.154:80/api/v1/admin/architects/${archId}`)
       .then((res) => {
         setFormData(res.data)
         setLoading(false);
@@ -59,7 +59,7 @@ export default function BookingEdit(){
     useEffect(() => {
         const getBlockedTimes = async() => {
             try{
-                const res = await axios.get(`http://localhost:3000/api/v1/admin/bookings/${archId}`)
+                const res = await axios.get(`http://3.110.37.154:80/api/v1/admin/bookings/${archId}`)
                 if(res.status === 200){
                     setBlockedTimes(res.data)
                     console.log(res.data)
@@ -86,7 +86,7 @@ export default function BookingEdit(){
           const st = bookingTime.toISOString();
           const tt = new Date(bookingTime.getTime() + 60 * 60 * 1000).toISOString();
           console.log(st, " ", tt);
-          const res = await axios.post(`http://localhost:3000/api/v1/admin/bookings/${archId}`, {
+          const res = await axios.post(`http://3.110.37.154:80/api/v1/admin/bookings/${archId}`, {
             startTime: bookingTime.toISOString(),
             endTime: new Date(bookingTime.getTime() + 60 * 60 * 1000).toISOString(), 
             name : formdata.name,

@@ -29,7 +29,7 @@ export default function EditCard(){
 
     useEffect(() => {
         const getItems = async() => {
-            axios.get(`http://localhost:3000/api/v1/admin/items/${itemId}`, {params : {id : itemId}})
+            axios.get(`http://3.110.37.154:80/api/v1/admin/items/${itemId}`, {params : {id : itemId}})
       .then((res) => {
         console.log(res.data)
         setFormData(res.data)
@@ -50,7 +50,7 @@ export default function EditCard(){
                  alert("Please sign in")   
                  return
             }
-            await axios.put(`http://localhost:3000/api/v1/admin/items/${itemId}`, {
+            await axios.put(`http://3.110.37.154:80/api/v1/admin/items/${itemId}`, {
                 title : formdata.title,
                 description : formdata.description,
                 price : Number(formdata.price),

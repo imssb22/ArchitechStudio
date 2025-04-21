@@ -27,7 +27,7 @@ export default function SearchPage() {
     if(!token){
         return alert( "You are not signed in")
     }
-    axios.get(`http://localhost:3000/api/v1/admin/search?q=${encodeURIComponent(query)}`, {
+    axios.get(`http://3.110.37.154:80/api/v1/admin/search?q=${encodeURIComponent(query)}`, {
       
           headers: {
             Authorization:  token

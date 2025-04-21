@@ -24,8 +24,7 @@ export default function Items() {
     }
     const handleBuy = async(item : Item) => {
         try{
-         
-            await axios.put("http://localhost:3000/api/v1/admin/cart", {
+            await axios.put("http://3.110.37.154:80/api/v1/admin/cart", {
               title : item.title,
                 description : item.description,
                 price : item.price,
@@ -47,7 +46,7 @@ export default function Items() {
               return alert("Please sign in")
           }
           
-          axios.get("http://localhost:3000/api/v1/admin/items", {
+          axios.get("http://3.110.37.154:80/api/v1/admin/items", {
         
             headers: {
               Authorization:  token, 

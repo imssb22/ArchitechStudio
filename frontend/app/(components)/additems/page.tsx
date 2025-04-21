@@ -21,7 +21,7 @@ export default function Additems() {
                 console.log("No token");
                 return;
             }
-            axios.post("http://localhost:3000/api/v1/admin/additems",{
+            axios.post("http://3.110.37.154:80/api/v1/admin/additems",{
                 title : formdata.title, 
                 description : formdata.description,
                 price : Number(formdata.price),

@@ -29,7 +29,7 @@ export default function Additems() {
                 console.log("No token");
                 return;
             }
-            axios.post("http://localhost:3000/api/v1/admin/addarchitect",{
+            axios.post("http://3.110.37.154:80/api/v1/admin/addarchitect",{
                 name : formdata.name, 
                 description : formdata.description,
                 yoe : Number(formdata.yoe),

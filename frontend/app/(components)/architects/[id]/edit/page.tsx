@@ -54,7 +54,7 @@ export default function EditCard(){
                  alert("Please sign in")   
                  return
             }
-            await axios.put(`http://localhost:3000/api/v1/admin/architects/${itemId}`, {
+            await axios.put(`http://3.110.37.154:80/api/v1/admin/architects/${itemId}`, {
                 name : formdata.name,
                 description : formdata.description,
                 rating : Number(formdata.rating),

@@ -48,7 +48,7 @@ export default function Architects() {
               return alert("Please sign in")
           }
           
-          axios.get("http://localhost:3000/api/v1/admin/architects", {
+          axios.get("http://3.110.37.154:80/api/v1/admin/architects", {
         
             headers: {
               Authorization:  token, 

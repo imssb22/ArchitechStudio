@@ -20,7 +20,7 @@ export default  function Signup(){
     const handleSignup = async() => {
         try{
           
-          axios.post('http://localhost:3000/api/v1/admin/signup', {
+          axios.post('http://3.110.37.154:80/api/v1/admin/signup', {
             username : username, 
             password : password,
             email : email
@@ -69,7 +69,7 @@ export default  function Signup(){
               <form onSubmit={handleSignup} className="space-y-6">
                 <div>
                   <label className="block text-stone-700 text-sm font-medium mb-2">Username</label>
-                  <input
+                  <input id = "signip"
                     type="text"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}

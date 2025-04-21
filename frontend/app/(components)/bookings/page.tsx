@@ -25,7 +25,7 @@ export default function Bookings() {
                 return alert("Please sign in")
             }
             try {
-                const response = await axios.get("http://localhost:3000/api/v1/admin/bookings");
+                const response = await axios.get("http://3.110.37.154:80/api/v1/admin/bookings");
                 if(response.status === 200) {
                     setBookings(response.data)
                 }
@@ -41,7 +41,7 @@ export default function Bookings() {
 
     const handleDelete = async(bookingId: string) => {
         try {
-            await axios.delete(`http://localhost:3000/api/v1/admin/bookings/${bookingId}`);
+            await axios.delete(`http://3.110.37.154:80/api/v1/admin/bookings/${bookingId}`);
             // Update the bookings list after successful deletion
             setBookings(bookings.filter(booking => booking.id !== bookingId));
         } catch(e) {
