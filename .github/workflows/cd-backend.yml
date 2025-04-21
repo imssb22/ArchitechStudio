@@ -20,6 +20,8 @@ jobs:
                 file: ./docker/Dockerfile.backend
                 push: true
                 tags: imssb22/arch-backend:${{ github.sha }}  
+            - name: Debug database URL
+              run: echo "DATABASE_URL=${{ secrets.DATABASE_URL }}"
             - name: Deploy to the VM
               run: |
                 # Save the SSH private key from GitHub secrets to a file
@@ -41,9 +43,8 @@ jobs:
                     -e POSTGRES_PASSWORD=randompassword \
                     --name postgres \
                     --network arch-network \
-                    
                     postgres
-      
+                    
                   # Run the new container with environment variables
                   docker run -d \
                     -p 3000:3000 \
