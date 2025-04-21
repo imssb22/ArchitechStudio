@@ -37,10 +37,11 @@ jobs:
                   docker stop postgres || true
                   docker rm postgres || true
                 # Run the new container with environment variables
-                  docker run -d \
-                    -e POSTGRES_PASSWORD=${{ secrets.DATABASE_PASSWORD }} \
+                  docker run \
+                    -e POSTGRES_PASSWORD=randompassword \
                     --name postgres \
                     --network arch-network \
+                    -d
                     postgres
       
                   # Run the new container with environment variables
