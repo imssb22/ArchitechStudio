@@ -47,7 +47,7 @@ jobs:
                   # Run the new container with environment variables
                   docker run -d \
                     -p 3000:3000 \
-                    -e DATABASE_URL='${{ secrets.DATABASE_URL }}' \
+                    -e DATABASE_URL=${{ secrets.DATABASE_URL }} \
                     -e JWT_SECRET='${{ secrets.JWT_SECRET }}' \
                     --name user_backend \
                     --network arch-network \
