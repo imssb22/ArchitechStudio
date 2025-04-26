@@ -128,7 +128,7 @@ return (
           <div className="relative group md:col-span-2">
             <input
               name="imageurl"
-              type="url"
+              type="text"
               required
               placeholder=" "
               onChange={handleChange}

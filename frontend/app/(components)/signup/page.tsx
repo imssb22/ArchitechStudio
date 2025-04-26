@@ -5,7 +5,7 @@ import {useState} from 'react';
 
 import type { RootState } from '../../../public/store'
 import { useSelector, useDispatch } from 'react-redux'
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { login } from '../../../public/features/auth/authSlice'
 export default  function Signup(){
   // axios.defaults.headers.common['authorization'] = `Bearer ${localStorage.getItem('token')}`;
@@ -13,7 +13,7 @@ export default  function Signup(){
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
-    // const router = useRouter();
+    const router = useRouter();
     const token = useSelector((state : RootState) => state.auth.token)
     const dispatch = useDispatch();
 
@@ -34,7 +34,7 @@ export default  function Signup(){
                     token : token
                   }))            
                   console.log("token")
-            // router.push("/landing");
+            router.push("/landing");
             window.location.href = "/landing";
         }else {
           alert(data.message);

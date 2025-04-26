@@ -32,8 +32,9 @@ export default function Signin(){
                     token : data.token
                   }))
                   console.log(token)
-                  window.location.href = "/landing";
                   router.push('/landing')
+                  window.location.href = "/landing";
+                 
               }else{
                   alert(data.message);
               }
